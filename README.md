@@ -10,3 +10,7 @@ The following are the features of the server :
 The following opensource projects are used in this project
 <br/>1. lwIP
 <br/>2. FatFs
+
+Hardware
+--------
+This project is intended to run on EK-TM4C1294XL from TI. This evaluation kit has a 32bit ARM Cortex M4 core, 1MB flash, 256kB SRAM among other features.

@@ -8,5 +8,5 @@ The following are the features of the server :
 <br/>3. Control the on board peripherals over HTTP
 	
 The following opensource projects are used in this project
-	1. lwIP
-	2. FatFs
+<br/>1. lwIP
+<br/>2. FatFs

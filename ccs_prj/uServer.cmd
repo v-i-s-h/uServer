@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * enet_io_ccs.cmd - CCS linker configuration file for enet_io.
+ * uServer_ccs.cmd - CCS linker configuration file for uServer.
  *
  * Copyright (c) 2013-2014 Texas Instruments Incorporated.  All rights reserved.
  * Software License Agreement

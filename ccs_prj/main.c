@@ -36,8 +36,9 @@
 #include "usbFilesystem/usbFilesystem.h"
 #include "system.h"
 
-#define APP_BUILD_STRING 	"uServer with USB for TM4C1294XL\n"
-#define APP_LOCATOR_STRING 	"EK-TM4C1294XL uServer USB"
+#define APP_NAME_STRING 	"uServer for TM4C1294XL\n"
+#define APP_BUILD_STRING	"Build : " __DATE__ " " __TIME__ "\n"
+#define APP_LOCATOR_STRING 	"uServer EK-TM4C1294XL"
 
 // Interrupt priority definitions.  The top 3 bits of these values are
 // significant with lower values indicating higher priority interrupts.
@@ -158,8 +159,7 @@ main(void)
     uint8_t pui8MACArray[8];
     int iStatus;
 
-    // ------------------------------------------------------------------------
-	// For log file
+    // For log file
 	UINT logId = 0;
 	FRESULT logResult;
 	char logLine[64];
@@ -167,7 +167,6 @@ main(void)
 	UINT bytesWritten = 0;
 	ULONG historySize = 0;
 	static FIL logObject;
-	// ------------------------------------------------------------------------
 
     //------------------------------- START BOARD SETUP ----------------------------------
     // Make sure the main oscillator is enabled because this is required by
@@ -191,6 +190,7 @@ main(void)
     // Configure debug port for internal use.
     UARTStdioConfig(0, 115200, g_ui32SysClock);
     // Print application banner
+    UARTprintf( APP_NAME_STRING  );
     UARTprintf( APP_BUILD_STRING );
     //-----------------------------------------------------------------------------------
 
@@ -254,8 +254,7 @@ main(void)
     	// Get a line of text from the user.
     	ReadLine( g_cCmdBuf, sizeof(g_cCmdBuf) );
 
-    	// ------------------------------------------------------------------------
-   		// log the cmd
+    	// log serial commands
    		logResult = f_open( &logObject, "/cmd.log", FA_OPEN_ALWAYS|FA_WRITE );
    		if( logResult != FR_OK ) {
    			UARTprintf( "Logging failed :: %s\n",
@@ -274,11 +273,10 @@ main(void)
    							 StringFromFresult(logResult) );
    			}
    			else {
-   				// UARTprintf( "Logged %2dB of %2dB  :: %s\n", bytesWritten, logLength, logLine );
+
    			}
    			f_close( &logObject );
    		}
-   		// ------------------------------------------------------------------------
 
 
     	if(g_cCmdBuf[0] == '\0') {

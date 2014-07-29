@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// io_fs.c - File System Processing for enet_io application.
+// fs.c - File System Processing.
 //
 // Copyright (c) 2007-2014 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement

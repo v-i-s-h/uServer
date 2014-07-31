@@ -1,1 +1,4 @@
 27 Jul 2014	: Initial code commit
+29 Jul 2014 : Uploaded CCS project files
+31 Jul 2014 : Fixed comments in code
+			  Updated license terms

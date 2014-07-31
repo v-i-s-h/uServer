@@ -575,11 +575,11 @@ void initUsbFs( void ) {
     g_eUIState = STATE_NO_DEVICE;
 
     //--------------------------- ENABLE uDMA for USB -----------------------------------
-        // Enable the uDMA controller and set up the control table base.
-        ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
-        ROM_uDMAEnable();
-        ROM_uDMAControlBaseSet(g_sDMAControlTable);
-        //-----------------------------------------------------------------------------------
+    // Enable the uDMA controller and set up the control table base.
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UDMA);
+    ROM_uDMAEnable();
+    ROM_uDMAControlBaseSet(g_sDMAControlTable);
+    //-----------------------------------------------------------------------------------
 
     // Initialize the USB stack mode and pass in a mode callback.
 	USBStackModeSet(0, eUSBModeHost, 0);

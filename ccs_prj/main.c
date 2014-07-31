@@ -32,6 +32,7 @@
 #include "drivers/devices.h"
 #include "httpserver/httpd.h"
 #include "httpserver/cgiHandlers.h"
+#include "httpserver/fs.h"
 #include "fatfs/src/ff.h"
 #include "usbFilesystem/usbFilesystem.h"
 #include "system.h"
@@ -106,9 +107,6 @@ DisplayIPAddress(uint32_t ui32Addr)
     // Display the string.
     UARTprintf(pcBuf);
 }
-
-
-
 
 // Required by lwIP library to support any host-related timer functions.
 void
@@ -208,8 +206,8 @@ main(void)
     MAP_IntPrioritySet(FAULT_SYSTICK, SYSTICK_INT_PRIORITY);
     //-----------------------------------------------------------------------------------
 
-    // ----------------------------- SETUP USBMSC FILESYSTEM ----------------------------
-    initUsbFs();
+    // ----------------------------- SETUP FILESYSTEM ------ ----------------------------
+    initFs();
 	//-----------------------------------------------------------------------------------
 
     //--------------------------- SETUP SERVER ------------------------------------------

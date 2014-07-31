@@ -33,6 +33,12 @@
 //*****************************************************************************
 #include "filesystem/flashFs.h"
 
+// Function to initialise filesystem
+// This will abstract the USB MSC or SD/MMC filesystems
+void initFs( void ) {
+	initUsbFs();
+}
+
 //*****************************************************************************
 //
 // Open a file and return a handle to the file, if found.  Otherwise,
@@ -47,6 +53,11 @@ fs_open(const char *pcName)
 {
     const struct fsdata_file *psTree;
     struct fs_file *psFile = NULL;
+
+    // For data file
+    FIL *hFile = NULL;
+    FRESULT fResult = FR_OK;
+    char fnBuffer[128];			// buffer to store /www+filename
 
     // ------------------------------------------------------------------------
 	// For log file
@@ -89,6 +100,9 @@ fs_open(const char *pcName)
         return(NULL);
     }
 
+    // ------------------------------------------------------------------------
+    // First we will look for any action requests
+    // @TODO : implement clean functionality -- like arduino server for actions.
     if( ustrncmp(pcName, "/getDeviceStatus.php", 10) == 0 ) {
     	static char pcBuf[30];
 
@@ -100,42 +114,68 @@ fs_open(const char *pcName)
     	psFile->pextension	= NULL;
     	return ( psFile );
     }
-
-    // If I can't find it there, look in the rest of the main psFile system
-    else {
-        // Initialize the psFile system tree pointer to the root of the linked
-        // list.
-        psTree = FS_ROOT;
-
-        // Begin processing the linked list, looking for the requested file name.
-        while(NULL != psTree) {
-            // Compare the requested file "pcName" to the file name in the
-            // current node.
-            if(ustrncmp(pcName, (char *)psTree->name, psTree->len) == 0) {
-                // Fill in the data pointer and length values from the
-                // linked list node.
-                psFile->data = (char *)psTree->data;
-                psFile->len = psTree->len;
-
-                // For now, we setup the read index to the end of the file,
-                // indicating that all data has been read.
-                psFile->index = psTree->len;
-
-                // We are not using any file system extensions in this
-                // application, so set the pointer to NULL.
-                psFile->pextension = NULL;
-
-                // Exit the loop and return the file system pointer.
-                break;
-            }
-
-            // If we get here, we did not find the file at this node of the
-            // linked list.  Get the next element in the list.
-            psTree = psTree->next;
-        }
+    //-------------------------------------------------------------------------
+    // if not any functions, then we will check whether the requested file
+    // exists in www folder of USB MSC.
+    usprintf( fnBuffer, "/www%s", pcName );			// append '/www'
+    // We'll assume filesystem is mounted, otherwise an attempt to open a file
+    // will throw an error.
+    // allocate memory fot the file handle
+    hFile = mem_malloc( sizeof( FIL ) );
+    if( hFile == NULL ) {
+    	// Huh, we don't have enough memory. Clean up and quit
+    	mem_free( psFile );
+    	return( NULL );
     }
+    // Attempt to open the file on the Fat File System.
+    UARTprintf( "Attempting to open %s......", fnBuffer );
+    fResult = f_open( hFile, fnBuffer, FA_READ);
+    if(fResult == FR_OK)
+    {
+    	UARTprintf( "[ OK ]\n" );
+        psFile->data = NULL;
+        psFile->len = 0;
+        psFile->index = 0;
+        psFile->pextension = hFile;
+        return(psFile);
+    }
+    else {
+    	UARTprintf( "[FAIL]\n" );
+    }
+    //-------------------------------------------------------------------------
+    // If I can't find it there, look in the flash fileystem
+    // Initialize the psFile system tree pointer to the root of the linked
+    // list.
+	psTree = FS_ROOT;
 
-    // If we didn't find the file, ptTee will be NULL.  Make sure we
+	// Begin processing the linked list, looking for the requested file name.
+	while(NULL != psTree) {
+		// Compare the requested file "pcName" to the file name in the
+		// current node.
+		if(ustrncmp(pcName, (char *)psTree->name, psTree->len) == 0) {
+			// Fill in the data pointer and length values from the
+			// linked list node.
+			psFile->data = (char *)psTree->data;
+			psFile->len = psTree->len;
+
+			// For now, we setup the read index to the end of the file,
+			// indicating that all data has been read.
+			psFile->index = psTree->len;
+
+			// We are not using any file system extensions in this
+			// application, so set the pointer to NULL.
+			psFile->pextension = NULL;
+
+			// Exit the loop and return the file system pointer.
+			break;
+		}
+
+		// If we get here, we did not find the file at this node of the
+		// linked list.  Get the next element in the list.
+		psTree = psTree->next;
+	}
+
+    // If we didn't find the file, psTee will be NULL.  Make sure we
     // return a NULL pointer if this happens.
     if(NULL == psTree) {
         mem_free(psFile);
@@ -143,6 +183,7 @@ fs_open(const char *pcName)
     }
 
     // Return the file system pointer.
+    // @TODO : Possible memory leak from hFile and psFile.
     return(psFile);
 }
 
@@ -151,6 +192,11 @@ fs_open(const char *pcName)
 //*****************************************************************************
 void
 fs_close(struct fs_file *psFile) {
+    // If a Fat file was opened, free its object.
+    if( psFile->pextension )
+    {
+        mem_free( psFile->pextension );
+    }
     // Free the main psFile system object.
     mem_free(psFile);
 }
@@ -163,14 +209,26 @@ fs_close(struct fs_file *psFile) {
 int
 fs_read(struct fs_file *psFile, char *pcBuffer, int iCount) {
     int iAvailable;
+    UINT uiBytesRead;
+    FRESULT fResult;
 
+	// Check to see if a Fat File was opened and process it.
+	if( psFile->pextension ) {
+		UARTprintf( "Reading from FatFs handle........." );
+		// Read the data.
+		fResult = f_read(psFile->pextension, pcBuffer, iCount, &uiBytesRead);
+		UARTprintf( "%d bytes\n", uiBytesRead );
+		if( (fResult != FR_OK) || (uiBytesRead == 0) ) {
+			return(-1);
+		}
+		return((int)uiBytesRead);
+	}
     // Check to see if a command (pextension = 1).
-    if(psFile->pextension == (void *)1) {
+	if(psFile->pextension == (void *)1) {
         // Nothing to do for this file type.
         psFile->pextension = NULL;
         return(-1);
     }
-
     // Check to see if more data is available.
     if(psFile->len == psFile->index) {
         // There is no remaining data.  Return a -1 for EOF indication.

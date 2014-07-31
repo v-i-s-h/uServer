@@ -86,6 +86,7 @@ struct fs_file {
 #endif /* LWIP_HTTPD_FILE_STATE */
 };
 
+void initFs( void );
 struct fs_file *fs_open(const char *name);
 void fs_close(struct fs_file *file);
 int fs_read(struct fs_file *file, char *buffer, int count);

@@ -255,6 +255,12 @@ fs_read(struct fs_file *psFile, char *pcBuffer, int iCount) {
 //*****************************************************************************
 int
 fs_bytes_left(struct fs_file *psFile) {
+	// Check to see if a Fat File was opened and process it.
+	if(psFile->pextension) {
+		// Return the number of bytes left to be read from the Fat File.
+		return(f_size((FIL *)psFile->pextension) -
+			   f_tell((FIL *)psFile->pextension));
+	}
     // Return the number of bytes left to be read from this file.
-    return(psFile->len - psFile->index);
+	return(psFile->len - psFile->index);
 }

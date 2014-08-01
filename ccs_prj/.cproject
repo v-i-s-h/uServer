@@ -43,7 +43,7 @@
 									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/examples/boards/ek-tm4c1294xl&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/third_party/lwip-1.4.1/src/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/third_party/lwip-1.4.1/src/include/ipv4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/third_party/lwip-1.4.1/apps&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/third_party/lwip-1.4.1/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/third_party/lwip-1.4.1/ports/tiva-tm4c129/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${TIVAWARE_CLP}/third_party&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>

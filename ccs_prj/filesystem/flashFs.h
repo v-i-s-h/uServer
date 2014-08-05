@@ -6,11 +6,11 @@
 //
 //***************************************************************************
 
-static const uint8_t data_sdcard_html[] =
+static const uint8_t data_index_htm[] =
 {
-    /* /sdcard.html */
-    0x2f, 0x73, 0x64, 0x63, 0x61, 0x72, 0x64, 0x2e,
-    0x68, 0x74, 0x6d, 0x6c, 0x00,
+    /* /index.htm */
+    0x2f, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x2e, 0x68,
+    0x74, 0x6d, 0x00,
     0x3c, 0x68, 0x74, 0x6d, 0x6c, 0x3e, 0x0a, 0x20,
     0x20, 0x20, 0x20, 0x3c, 0x68, 0x65, 0x61, 0x64,
     0x3e, 0x0a, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20,
@@ -105,17 +105,17 @@ static const uint8_t data_sdcard_html[] =
    
 };
 
-const struct fsdata_file file_sdcard_html[] =
+const struct fsdata_file file_index_htm[] =
 {
 	{
 		NULL,
-		data_sdcard_html,
-		data_sdcard_html + 13,
-		sizeof(data_sdcard_html) - 13
+		data_index_htm,
+		data_index_htm + 11,
+		sizeof(data_index_htm) - 11
 	}
 };
 
-#define FS_ROOT file_sdcard_html
+#define FS_ROOT file_index_htm
 
 #define FS_NUMFILES 1
 

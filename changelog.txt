@@ -1,10 +1,11 @@
 27 Jul 2014	: Initial code commit
 29 Jul 2014 : Uploaded CCS project files
 31 Jul 2014 : Fixed comments in code
-			  Updated license terms
-			  Started integrating USBMSC-lwIP interface
+							Updated license terms
+							Started integrating USBMSC-lwIP interface
 01 Aug 2014 : Integrated USB MSC lwIP interface.
-			  Code clean up for httpserver part.
-			  Now supports static webpages in 8.3 naming format.
-			  Sample filesystem added.
-			  
+							Code clean up for httpserver part.
+							Now supports static webpages in 8.3 naming format.
+							Sample filesystem added.
+05 Aug 2014 : Removed "www" folder support.
+							Added support for files in folders.

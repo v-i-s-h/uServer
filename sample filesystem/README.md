@@ -1,16 +1,4 @@
-All the website files should be stored under 'www' folder.
-<br/>Sample filesystem
-<br/> /
-<br/> +---www
-<br/> -----+---site1
-<br/> -----------+---index.htm
-<br/> -----------+---page1.htm
-<br/> -----------+---page2.htm
-<br/> -----+---site2
-<br/> -----------+---index.htm
-<br/> -----------+---page1.htm
-<br/> -----------+---page2.htm
-
-
-Currently you can access each site by typing in
-<br>*www.xxx.yyy.zzz/site1/*
+This folder contains a set of sample files for testing the server. You can copy 
+these files to root of sdcard. While working on your website, your index file 
+should be at the root of sd card. Also, all your file names should be of 8.3
+standard.

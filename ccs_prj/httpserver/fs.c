@@ -52,7 +52,7 @@ fs_open(const char *pcName) {
     // For data file
     FIL *hFile = NULL;
     FRESULT fResult = FR_OK;
-    char fnBuffer[128];			// buffer to store /www+filename
+    // char fnBuffer[128];			// buffer to store /www+filename
 
     // For log file
     FIL hLogFile;
@@ -108,7 +108,7 @@ fs_open(const char *pcName) {
     // if not any functions, then we will check whether the requested file
     // exists in www folder of USB MSC.
     // @TODO : fix the requested filename with FatFs filename - tricky??
-    usprintf( fnBuffer, "/www%s", pcName );			// append '/www'
+    // usprintf( fnBuffer, "/www%s", pcName );			// append '/www'
     // We'll assume filesystem is mounted, otherwise an attempt to open a file
     // will throw an error.
     // allocate memory fot the file handle
@@ -119,7 +119,7 @@ fs_open(const char *pcName) {
     	return( NULL );
     }
     // Attempt to open the file on the Fat File System.
-    fResult = f_open( hFile, fnBuffer, FA_READ);
+    fResult = f_open( hFile, pcName, FA_READ);
     if(fResult == FR_OK)
     {
         psFile->data = NULL;

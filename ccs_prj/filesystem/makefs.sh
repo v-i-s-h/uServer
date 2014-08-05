@@ -1,8 +1,8 @@
-if [ -f filesystemImage.h ]
+if [ -f flashFs.h ]
 then
-	rm filesystemImage.h
+	rm flashFs.h
 else
-	echo "No filesystem image found!"
+	echo "No flash filesystem image found!"
 fi
 
-./makefsfile -i $1 -o filesystemImage.h -r -h -q
+./makefsfile -i flashFs/ -o flashFs.h -r -h -q

@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>
+            TI Connected Launchpad Home
+        </title>
+        <script>
+            var ledStatus = [ false, false, false, false ];
+            var xmlhttp; xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if( (xmlhttp.readyState == 4) && (xmlhttp.status == 200) ) {
+                    buffer = xmlhttp.responseText.split(",");
+                    ledStatus[0] = (buffer[0]=="1")?true:false;
+                    ledStatus[1] = (buffer[1]=="1")?true:false;
+                    ledStatus[2] = (buffer[2]=="1")?true:false;
+                    ledStatus[3] = (buffer[3]=="1")?true:false;
+                    if( ledStatus[0] == true ) {
+                        document.getElementById( "0" ).className = "ledStatusOn"; 
+                    } else { 
+                        document.getElementById( "0" ).className = "ledStatusOff";
+                    } 
+                    if( ledStatus[1] == true ) {
+                        document.getElementById( "1" ).className = "ledStatusOn";
+                    } else { 
+                        document.getElementById( "1" ).className = "ledStatusOff";
+                    } 
+                    if( ledStatus[2] == true ) { 
+                        document.getElementById( "2" ).className = "ledStatusOn"; 
+                    } else { 
+                        document.getElementById( "2" ).className = "ledStatusOff";
+                    } if( ledStatus[3] == true ) {
+                        document.getElementById( "3" ).className = "ledStatusOn";
+                    } else { 
+                        document.getElementById( "3" ).className = "ledStatusOff";
+                    }
+                }
+            }
+            function getDeviceStatus() {
+                xmlhttp.open( "GET", "getDeviceStatus.php", true );
+                xmlhttp.send();
+            }
+            function triggerInput( outButton ) {
+                if( ledStatus[outButton.name] == false ) {
+                    xmlhttp.open( "GET", "./io_control.cgi?id="+outButton.id+"&val=1", true );
+                    xmlhttp.send();
+                } else { 
+                    xmlhttp.open( "GET", "./io_control.cgi?id="+outButton.id+"&val=0", true );
+                    xmlhttp.send();
+                }
+            }
+        </script>
+        <style>
+            input.ledStatusOff {
+                border-radius:10px 10px 10px 10px;
+                height:40px;width:120px;
+                text-align:center;
+                background-color:#F0F0F0;
+                border:1px solid rgba(0, 0, 0, 0.1);
+            }
+            input.ledStatusOn {
+                border-radius:10px 10px 10px 10px;
+                height:40px;
+                width:120px;
+                text-align:center;
+                background-color:#7FFF7F;
+                border:1px solid rgba(0, 0, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body style='background: #D0D0D0;' onload="getDeviceStatus()">
+        <table id="mainFrame" style="position:relative;margin-left:auto;margin-right:auto;padding-left:10px;padding-right:10px;padding-top:10px;background:#FFFFFF;border-radius: 20px 20px 0px 0px;padding-bottom:10px;box-shadow: 10px 10px 5px #888888;" >
+            <tr>
+                <td align='center'>
+                    <h3 align=center>
+                        <font color="red">
+                            TI Connected Launchpad Home
+                        </font>
+                    </h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h1 align='center'>
+                        <font color=#1E90FF>
+                            e14 Roadtest
+                        </font>
+                    </h1>
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <input type="button" class="ledStatusOff" id="0" name="0" value="LED1" onClick="triggerInput( this )"></input>
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <input type="button" class="ledStatusOff" id="1" name="1" value="LED2" onClick="triggerInput( this )"></input>
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <input type="button" class="ledStatusOff" id="2" name="2" value="LED3" onClick="triggerInput( this )"></input>
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <input type="button" class="ledStatusOff" id="3" name="3" value="LED4" onClick="triggerInput( this )"></input>
+                </td>
+            </tr>
+        </table>
+        <div style="position:relative;margin-left:auto;margin-right:auto;margin-top:5px;padding-left:10px;padding-right:10px;padding-top:10px;padding-bottom:10px;background:#FFFFFF;border-radius: 0px 0px 20px 20px;width:340px;box-shadow: 10px 10px 5px #888888;">
+            <a href="osci.htm">
+                <h1 style="text-shadow:2px 2px #272727;"align=center>
+                    <font color=0x7FFF7F>&#9654 Oscilloscope</font>
+                </h1>
+            </a>
+        </div>
+    </body>
+</html>

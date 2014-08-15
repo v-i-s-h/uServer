@@ -1,2 +1,4 @@
 A detailed article about usage can be found at :
 http://www.element14.com/community/people/vish/blog/2014/08/06/building-your-own-webserver-with-ek-tm4c1294xl-launchpad
+
+In case of any doubts, please feel free to contact me at : get.vichu@gmail.com
